@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
     HomeWrapper,
     Card,
@@ -12,6 +12,10 @@ const Home = () => {
     const { loading, pokemons } = usePokemons()
 
     const [pokemon, setPokemon] = useState()
+
+    const onClose = useCallback(() => {
+        setPokemon(undefined)
+    }, [])
 
     if (loading) {
         return <HomeWrapper><Spin /></HomeWrapper>
@@ -37,9 +41,9 @@ const Home = () => {
                 centered
                 title={pokemon?.name.toUpperCase()}
                 visible={!!pokemon}
-                onCancel={() => setPokemon(undefined)}
+                onCancel={onClose}
                 footer={[
-                    <Button type="primary" loading={loading} onClick={() => setPokemon(undefined)}>
+                    <Button key="back" type="primary" loading={loading} onClick={onClose}>
                         Back
                     </Button>
                 ]}

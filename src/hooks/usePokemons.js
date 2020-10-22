@@ -1,3 +1,4 @@
+import { notification } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 import replaceStrings from '../shared/replaceStrings'
 
@@ -6,7 +7,6 @@ const usePokemons = () => {
     const [pokemons, setPokemons] = useState([])
 
     const getPokemons = useCallback(async () => {
-        console.log("Enter here")
         try {
             const responseUrls = await fetch('https://pokeapi.co/api/v2/pokemon?limit=15')
             const _pokemonsFetch = (await responseUrls.json()).results || []
@@ -31,14 +31,17 @@ const usePokemons = () => {
 
             setPokemons(_pokemons)
         } catch (e) {
-            console.log(e.message)
+            notification.error({
+                message: 'Error',
+                description: e.message,
+            })
         }
         setLoading(false)
     }, [])
 
     useEffect(() => {
         getPokemons()
-    }, [])
+    }, [getPokemons])
 
     return { loading, pokemons }
 }

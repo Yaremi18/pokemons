@@ -1,6 +1,5 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { Tag, Divider, Spin } from 'antd'
-import replaceStrings from '../../../shared/replaceStrings'
 import {
     Container,
     ItemsContainer,
@@ -23,10 +22,6 @@ const convertToString = (items = []) => {
 const PokemonDetail = ({ pokemon }) => {
     const { loading, extraDetail } = usePokemon(pokemon)
 
-    // const spritesNames = useMemo(() => Object.keys(pokemon.sprites), [pokemon.sprites])
-
-    console.log(pokemon.sprites)
-
     if (loading) {
         return <Container><Spin /></Container>
     }
@@ -34,8 +29,8 @@ const PokemonDetail = ({ pokemon }) => {
     return (
         <Container>
             <ImagesContainer>
-                <img alt={pokemon.name} src={pokemon.sprites.front_default} />
-                <img alt={pokemon.name}src={pokemon.sprites.back_default} />
+                <img width="200px" alt={pokemon.name} src={pokemon.sprites.front_default} />
+                <img width="200px" alt={pokemon.name}src={pokemon.sprites.back_default} />
             </ImagesContainer>
             <Row>
                 <Col span={12}>
@@ -92,17 +87,6 @@ const PokemonDetail = ({ pokemon }) => {
                     </ItemsContainer>
                 </Col>
             </Row>
-            
-
-
-            
-           
-
-            
-
-            
-
-           
         </Container>
     )
 }
