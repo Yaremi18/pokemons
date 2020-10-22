@@ -1,16 +1,17 @@
 import React, { useCallback, useState } from 'react'
 import {
-    HomeWrapper,
+    HomeContainer,
     Card,
     Meta,
+    CardsContainer,
 } from './style'
 import { Modal, Button, Spin } from 'antd'
 import usePokemons from '../../../hooks/usePokemons'
 import PokemonDetail from '../../organisms/PokemonDetail'
 
 const Home = () => {
-    const { loading, pokemons } = usePokemons()
-
+    const [page, setPage] = useState(0)
+    const { loading, pokemons } = usePokemons(page)
     const [pokemon, setPokemon] = useState()
 
     const onClose = useCallback(() => {
@@ -18,24 +19,26 @@ const Home = () => {
     }, [])
 
     if (loading) {
-        return <HomeWrapper><Spin /></HomeWrapper>
+        return <HomeContainer><Spin /></HomeContainer>
     }
     
     return (
-        <HomeWrapper>
-            {pokemons.map((pokemon) => (
-                <Card
-                    key={pokemon.name}
-                    hoverable
-                    cover={
-                        <img alt={pokemon.name} src={pokemon.sprites.front_default} />
-                    }
-                    onClick={() => setPokemon(pokemon)}
-                >
-                    <Meta title={pokemon.name.toUpperCase()} />
-                </Card>
-            ))}
-
+        <HomeContainer>
+            <CardsContainer>
+                {pokemons.map((pokemon) => (
+                    <Card
+                        key={pokemon.name}
+                        hoverable
+                        cover={
+                            <img alt={pokemon.name} src={pokemon.sprites.front_default} />
+                        }
+                        onClick={() => setPokemon(pokemon)}
+                    >
+                        <Meta title={pokemon.name.toUpperCase()} />
+                    </Card>
+                ))}
+            </CardsContainer>
+            {page < 5 && <Button onClick={() => setPage(prev => prev + 1)}>Load more</Button>}
             <Modal
                 width={1000}
                 centered
@@ -50,7 +53,7 @@ const Home = () => {
             >
                 {pokemon && <PokemonDetail pokemon={pokemon} />}
             </Modal>
-        </HomeWrapper>
+        </HomeContainer>
     )
 }
 

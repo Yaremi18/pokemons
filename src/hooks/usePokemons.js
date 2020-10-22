@@ -2,13 +2,22 @@ import { notification } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 import replaceStrings from '../shared/replaceStrings'
 
-const usePokemons = () => {
+let limit = 30
+
+const usePokemons = (page) => {
     const [loading, setLoading] = useState(true)
     const [pokemons, setPokemons] = useState([])
 
     const getPokemons = useCallback(async () => {
         try {
-            const responseUrls = await fetch('https://pokeapi.co/api/v2/pokemon?limit=15')
+            let offset = page * 30
+    
+            if (offset > 149 ) {
+                offset = 150
+                limit = 1
+            }
+
+            const responseUrls = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
             const _pokemonsFetch = (await responseUrls.json()).results || []
 
             const _pokemons = await Promise.all(_pokemonsFetch.map(async(pokemon) => {
@@ -29,7 +38,7 @@ const usePokemons = () => {
                 }
             }))
 
-            setPokemons(_pokemons)
+            setPokemons(prev => [...prev, ..._pokemons])
         } catch (e) {
             notification.error({
                 message: 'Error',
@@ -37,7 +46,7 @@ const usePokemons = () => {
             })
         }
         setLoading(false)
-    }, [])
+    }, [page])
 
     useEffect(() => {
         getPokemons()

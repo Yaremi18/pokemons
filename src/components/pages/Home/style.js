@@ -4,8 +4,14 @@ import {
     Card as CardAntd,
 } from 'antd'
 
-export const HomeWrapper = styled.div`
+export const HomeContainer = styled.div`
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
+export const CardsContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
