@@ -4,8 +4,9 @@ import {
     Card,
     Meta,
 } from './style'
-import { Modal, Button } from 'antd'
+import { Modal, Button, Spin } from 'antd'
 import usePokemons from '../../../hooks/usePokemons'
+import PokemonDetail from '../../organisms/PokemonDetail'
 
 const Home = () => {
     const { loading, pokemons } = usePokemons()
@@ -13,7 +14,7 @@ const Home = () => {
     const [pokemon, setPokemon] = useState()
 
     if (loading) {
-        return 'Loading...'
+        return <HomeWrapper><Spin /></HomeWrapper>
     }
     
     return (
@@ -32,16 +33,18 @@ const Home = () => {
             ))}
 
             <Modal
-                title={pokemon?.name}
+                width={1000}
+                centered
+                title={pokemon?.name.toUpperCase()}
                 visible={!!pokemon}
                 onCancel={() => setPokemon(undefined)}
                 footer={[
-                    <Button type="primary" loading={loading} onClick={() => {}}>
-                        Submit
+                    <Button type="primary" loading={loading} onClick={() => setPokemon(undefined)}>
+                        Back
                     </Button>
                 ]}
             >
-                <p>Detail</p>
+                {pokemon && <PokemonDetail pokemon={pokemon} />}
             </Modal>
         </HomeWrapper>
     )

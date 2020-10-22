@@ -6,11 +6,12 @@ const { Content } = Layout
 
 const PageWrapper = ({ children, title }) => {
     return (
-        <Layout>
-            <Header>
+        <Layout style={{ height: '100%' }}>
+            <Header style={{ height: '10%' }}>
                 <Title level={2}>{title}</Title>
             </Header>
-            <Content>
+            <Content style={{ 
+    height: '90%', overflow: 'auto'}}>
                 {children}
             </Content>
         </Layout>

@@ -8,8 +8,8 @@ export const HomeWrapper = styled.div`
     padding: 10px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-eve
-    
+    justify-content: center;
+    height: 100%;
 `
 
 export const Title = styled(Typography.Title)`
