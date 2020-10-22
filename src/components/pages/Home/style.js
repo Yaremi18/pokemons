@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import {
     Typography,
     Card as CardAntd,
+    Input as InputAntd
 } from 'antd'
 
 export const HomeContainer = styled.div`
@@ -31,4 +32,14 @@ export const Meta = styled(CardAntd.Meta)`
     display: flex;
     align-items: center;
     justify-content: center;
+`
+
+export const Input = styled(InputAntd)`
+    width: 200px;
+`
+
+export const SelectContainer = styled.div`
+    // width: 100%;
+    // display: flex;
+    // flex-direction: column;
 `

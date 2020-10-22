@@ -1,22 +1,40 @@
 import React, { useCallback, useState } from 'react'
+import { Modal, Button, Spin, Typography, notification } from 'antd'
+import usePokemons from '../../../hooks/usePokemons'
+import PokemonDetail from '../../organisms/PokemonDetail'
 import {
     HomeContainer,
     Card,
     Meta,
     CardsContainer,
+    Input,
+    SelectContainer,
 } from './style'
-import { Modal, Button, Spin } from 'antd'
-import usePokemons from '../../../hooks/usePokemons'
-import PokemonDetail from '../../organisms/PokemonDetail'
 
 const Home = () => {
     const [page, setPage] = useState(0)
-    const { loading, pokemons } = usePokemons(page)
+    const { loading, pokemons, getPokemon } = usePokemons(page)
     const [pokemon, setPokemon] = useState()
+
+    const [searchValue, setSearchValue] = useState('')
 
     const onClose = useCallback(() => {
         setPokemon(undefined)
     }, [])
+
+    const onChangeSearchValue = useCallback(({ target: { value } }) => setSearchValue(value), [])
+
+    const onSearch = useCallback(() => {
+        if (!searchValue) {
+            notification.warning({
+                message: 'Warning',
+                description: 'Enter a pokémon identifier or a name',
+                duration: 3
+            })
+            return
+        }
+        getPokemon(searchValue.toLowerCase())
+    }, [searchValue, getPokemon])
 
     if (loading) {
         return <HomeContainer><Spin /></HomeContainer>
@@ -24,6 +42,11 @@ const Home = () => {
     
     return (
         <HomeContainer>
+            <SelectContainer>
+                <Typography.Text>Search by: </Typography.Text>
+                <Input value={searchValue} onChange={onChangeSearchValue} />
+                <Button onClick={onSearch}>Search</Button>
+            </SelectContainer>
             <CardsContainer>
                 {pokemons.map((pokemon) => (
                     <Card
